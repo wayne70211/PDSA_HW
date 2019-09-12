@@ -1,6 +1,6 @@
 import java.util.Scanner;
 import java.io.File;
-public class Main{
+public class Mapping{
     public static void main(String[] args){
 
         int foundCount = 0;
