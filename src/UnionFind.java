@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Scanner;
@@ -47,7 +49,15 @@ public class UnionFind {
         uf.parent = new ArrayList<>();
         uf.size = new ArrayList<>();
 
-        Scanner in = new Scanner(System.in);
+        //Scanner in = new Scanner(System.in);
+
+        File file = new File("input_HW1.txt") ;
+        Scanner in = null;
+        try {
+            in = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
         // Read threshold
         int threshold = Integer.parseInt(in.nextLine());
@@ -59,36 +69,32 @@ public class UnionFind {
             // Read Line
             String line = in.nextLine();
 
-            try {
-                // Split the Content
-                String[] protein = line.split("\t");
+            // Split the Content
+            String[] protein = line.split("\t");
 
-                // Get the strength
-                int strength = Integer.parseInt(protein[2]);
+            // Get the strength
+            int strength = Integer.parseInt(protein[2]);
 
-                if (strength >= threshold){
+            if (strength >= threshold){
 
-                    // Write the Hashtable
-                    for (int i=0;i<2;i++){
-                        if (!table.containsKey(protein[i])) {
-                            table.put(protein[i], index);
+                // Write the Hashtable
+                for (int i=0;i<2;i++){
+                    if (!table.containsKey(protein[i])) {
+                        table.put(protein[i], index);
 
-                            // Initializes WeightedQuickUnionUF
-                            uf.parent.add(index);
-                            uf.size.add(1);
-                            uf.count +=1;
+                        // Initializes WeightedQuickUnionUF
+                        uf.parent.add(index);
+                        uf.size.add(1);
+                        uf.count +=1;
 
-                            index++;
-                        }
+                        index++;
                     }
-
-                    // Weighted Quick-Union
-                    if (uf.connected(table.get(protein[0]), table.get(protein[1]))) continue;
-                    uf.union(table.get(protein[0]),table.get(protein[1]));
-
                 }
-            }catch (Exception e){
-                break;
+
+                // Weighted Quick-Union
+                if (uf.connected(table.get(protein[0]), table.get(protein[1]))) continue;
+                uf.union(table.get(protein[0]),table.get(protein[1]));
+
             }
         }
 

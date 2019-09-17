@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.io.File;
 public class Mapping{
@@ -7,16 +8,16 @@ public class Mapping{
         int repeatCount = 0;
 
         //Scanner (use this scanner when uploading your code)
-        Scanner in = new Scanner(System.in);
+        //Scanner in = new Scanner(System.in);
 
         //scanner for local test (delete this part when uploading to onlinejudge)
-//        File file = new File("input_HW0.txt") ;
-//        Scanner in = null;
-//        try {
-//            in = new Scanner(file);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
+        File file = new File("input_HW0.txt") ;
+        Scanner in = null;
+        try {
+            in = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
         //Read int k
         int readCount=Integer.parseInt(in.nextLine());
