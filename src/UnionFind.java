@@ -35,6 +35,9 @@ public class UnionFind {
                     table.put(protein[1], count);
                     count++;
                 }
+
+                // Weighted Quick-Union
+
             }
         }
 
@@ -44,6 +47,8 @@ public class UnionFind {
             String name = names.nextElement();
             System.out.println( name + " : " +table.get(name));
         }
+        System.out.println(count);
+
 
     }
 }
