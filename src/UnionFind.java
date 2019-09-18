@@ -49,15 +49,15 @@ public class UnionFind {
         uf.parent = new ArrayList<>();
         uf.size = new ArrayList<>();
 
-        //Scanner in = new Scanner(System.in);
+        Scanner in = new Scanner(System.in);
 
-        File file = new File("input_HW1.txt") ;
-        Scanner in = null;
-        try {
-            in = new Scanner(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+//        File file = new File("input_HW1.txt") ;
+//        Scanner in = null;
+//        try {
+//            in = new Scanner(file);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
 
         // Read threshold
         int threshold = Integer.parseInt(in.nextLine());
@@ -65,7 +65,7 @@ public class UnionFind {
         // Initializes index
         int index = 0;
 
-        while (in.hasNext()){
+        while (in.hasNextLine()){
             // Read Line
             String line = in.nextLine();
 
@@ -97,6 +97,8 @@ public class UnionFind {
 
             }
         }
+
+        in.close();
 
         System.out.println(index);
         System.out.println(uf.count());
