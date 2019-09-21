@@ -6,25 +6,25 @@ import java.util.Scanner;
 
 
 public class UnionFind {
-    private int count;      // number of components
-    private ArrayList<Integer> parent ;
-    private ArrayList<Integer> size   ;
+    private static int count;      // number of components
+    private static ArrayList<Integer> parent ;
+    private static ArrayList<Integer> size   ;
 
-    private int count() {
+    private static int count() {
         return count;
     }
 
-    private int find(int p) {
+    private static int find(int p) {
         while (p != parent.get(p))
             p = parent.get(p);
         return p;
     }
 
-    private boolean connected(int p, int q) {
+    private static boolean connected(int p, int q) {
         return find(p) == find(q);
     }
 
-    private void union(int p, int q) {
+    private static void union(int p, int q) {
         int rootP = find(p);
         int rootQ = find(q);
         if (rootP == rootQ) return;
@@ -44,10 +44,9 @@ public class UnionFind {
     public static void main(String[] args) {
 
         Hashtable<String, Integer> table = new Hashtable<>();
-        UnionFind uf = new UnionFind();
 
-        uf.parent = new ArrayList<>();
-        uf.size = new ArrayList<>();
+        parent = new ArrayList<>();
+        size = new ArrayList<>();
 
         Scanner in = new Scanner(System.in);
 
@@ -65,7 +64,7 @@ public class UnionFind {
         // Initializes index
         int index = 0;
 
-        while (in.hasNextLine()){
+        while (in.hasNextLine()) {
             // Read Line
             String line = in.nextLine();
 
@@ -75,7 +74,7 @@ public class UnionFind {
             // Get the strength
             int strength = Integer.parseInt(protein[2]);
 
-            if (strength >= threshold){
+            if (strength >= threshold) {
 
                 // Write the Hashtable
                 for (int i=0;i<2;i++){
@@ -83,17 +82,17 @@ public class UnionFind {
                         table.put(protein[i], index);
 
                         // Initializes WeightedQuickUnionUF
-                        uf.parent.add(index);
-                        uf.size.add(1);
-                        uf.count +=1;
+                        parent.add(index);
+                        size.add(1);
+                        count +=1;
 
                         index++;
                     }
                 }
 
                 // Weighted Quick-Union
-                if (uf.connected(table.get(protein[0]), table.get(protein[1]))) continue;
-                uf.union(table.get(protein[0]),table.get(protein[1]));
+                if (connected(table.get(protein[0]), table.get(protein[1]))) continue;
+                union(table.get(protein[0]),table.get(protein[1]));
 
             }
         }
@@ -101,7 +100,7 @@ public class UnionFind {
         in.close();
 
         System.out.println(index);
-        System.out.println(uf.count());
+        System.out.println(count());
 
     }
 }
