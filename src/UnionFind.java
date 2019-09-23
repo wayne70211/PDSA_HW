@@ -10,10 +10,6 @@ public class UnionFind {
     private static ArrayList<Integer> parent ;
     private static ArrayList<Integer> size   ;
 
-    private static int count() {
-        return count;
-    }
-
     private static int find(int p) {
         while (p != parent.get(p))
             p = parent.get(p);
@@ -84,8 +80,7 @@ public class UnionFind {
                         // Initializes WeightedQuickUnionUF
                         parent.add(index);
                         size.add(1);
-                        count +=1;
-
+                        count++;
                         index++;
                     }
                 }
@@ -100,7 +95,7 @@ public class UnionFind {
         in.close();
 
         System.out.println(index);
-        System.out.println(count());
+        System.out.println(count);
 
     }
 }
