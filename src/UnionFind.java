@@ -28,11 +28,11 @@ public class UnionFind {
         // make smaller root point to larger one
         if (size.get(rootP) < size.get(rootQ)) {
             parent.set(rootP, rootQ);
-            size.set(rootQ, size.get(rootP));
+            size.set(rootQ, rootP);
         }
         else {
             parent.set(rootQ, rootP);
-            size.set(rootP, size.get(rootQ));
+            size.set(rootP, rootQ);
         }
         count--;
     }
