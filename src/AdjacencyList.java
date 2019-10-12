@@ -137,7 +137,7 @@ public class AdjacencyList {
         return array;
     }
     public static void main (String[] args) throws Exception{
-        AdjacencyList a = new AdjacencyList(20);
+        AdjacencyList adjacencyList = new AdjacencyList(20);
         File file = new File("input_HW2.txt") ;
         Scanner in = new Scanner(file);
         String pro1 = "";
@@ -145,19 +145,19 @@ public class AdjacencyList {
         {
             pro1 = in.nextLine();
             String[] pro = pro1.split("\t");
-            a.add(pro[0],pro[1]);
+            adjacencyList.add(pro[0],pro[1]);
         }
         for (int i=1;i<21;i++){
             String s = String.valueOf(i);
             if (i<10) s = "0"+s;
             System.out.print("protein"+s+" : ");
-            for(String o:a.interactions("protein"+s,1)) {
+            for(String o:adjacencyList.interactions("protein"+s,1)) {
                 System.out.print(o+" ");
             }
             System.out.println();
         }
         System.out.println("========================");
-        System.out.println("Total edges : "+a.size());
+        System.out.println("Total edges : "+adjacencyList.size());
     }
 
 }
