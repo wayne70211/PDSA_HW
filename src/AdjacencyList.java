@@ -4,8 +4,8 @@ import java.util.*;
 
 public class AdjacencyList {
     private int index;                          // Count different protein
-    private int edges;
-    private AdjList adjList;              // AdjacencyList
+    private int edges;                          // Count edges
+    private AdjList adjList;                    // AdjacencyList
     private Hashtable<String,Integer> proteins; // Dictionary of protein and index of Adjacency List
 
     private class AdjList<Item> {
@@ -83,6 +83,7 @@ public class AdjacencyList {
     public String[] neighbors(String protein){
         // return all the neighbors of a protein as an array, where the proteins in the array are sorted alphabetically
         if (!proteins.containsKey(protein)) throw new IllegalArgumentException();
+
         int searcher = proteins.get(protein);   // The index of AdjacencyList
         Stack list = adjList.get(searcher);     // return the stack of protein in AdjacencyList
 
