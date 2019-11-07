@@ -49,7 +49,7 @@ public class ConvexHull {
 
     public static void main(String[] args) throws FileNotFoundException {
 
-        File file = new File(args[0]) ;// file name assigned
+        File file = new File("input_HW4.txt") ;// file name assigned
 
         Scanner in = new Scanner(file);
         double distance = Double.parseDouble(in.nextLine());
