@@ -1,4 +1,5 @@
 import edu.princeton.cs.algs4.Point2D;
+import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 import java.io.File;
@@ -57,6 +58,12 @@ public class ConvexHull {
         HashMap<Point2D,Integer> hashMap = new HashMap<>();
         Point2D[] points = new Point2D[size];
 
+        StdDraw.setCanvasSize(500, 500);
+        StdDraw.setXscale(0, 1);
+        StdDraw.setYscale(0, 1);
+        StdDraw.setPenRadius(0.01);
+        StdDraw.enableDoubleBuffering();
+
         // 1. read in the file containing N 2-dimentional points
         for (int i=0;i<size;i++) {
             String[] point = in.nextLine().split(" ");
@@ -64,6 +71,7 @@ public class ConvexHull {
             double y  = Double.parseDouble(point[1]);
             points[i] = new Point2D(x,y);
             hashMap.put(new Point2D(x,y),i);
+            points[i].draw();
         }
 
         // 2. create an edge for each pair of points with a distance <= d
@@ -100,12 +108,25 @@ public class ConvexHull {
                 }
 
                 // for each CC, find its convex hull vertices by calling ConvexHullVertex(a[])
-                N += ConvexHullVertex(temp).length;
+                int[] convexHull = ConvexHullVertex(temp);
+
+                StdDraw.setPenColor(StdDraw.RED);
+                StdDraw.setPenRadius(0.005);
+
+                for (int i=0;i<convexHull.length-1;i++) {
+                    temp[convexHull[i]].drawTo(temp[convexHull[i+1]]);
+                    StdDraw.show();
+                    StdDraw.pause(200);
+                }
+
+                temp[convexHull[convexHull.length-1]].drawTo(temp[convexHull[0]]);
+                StdDraw.show();
+
+                N += convexHull.length;
             }
         }
 
         // count the number of points in N serving as a convex hull vertex, print it
         System.out.println(N);
-
     }
 }
