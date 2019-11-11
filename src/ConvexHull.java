@@ -51,11 +51,11 @@ public class ConvexHull {
     public static void main(String[] args) throws FileNotFoundException {
 
         File file = new File("input_HW4.txt") ;// file name assigned
-
         Scanner in = new Scanner(file);
+
         double distance = Double.parseDouble(in.nextLine());
         int size = Integer.parseInt(in.nextLine());
-        HashMap<Point2D,Integer> hashMap = new HashMap<>();
+
         Point2D[] points = new Point2D[size];
 
         StdDraw.setCanvasSize(500, 500);
@@ -64,13 +64,12 @@ public class ConvexHull {
         StdDraw.setPenRadius(0.01);
         StdDraw.enableDoubleBuffering();
 
-        // 1. read in the file containing N 2-dimentional points
+        // 1. read in the file containing N 2-dimensional points
         for (int i=0;i<size;i++) {
             String[] point = in.nextLine().split(" ");
             double x  = Double.parseDouble(point[0]);
             double y  = Double.parseDouble(point[1]);
             points[i] = new Point2D(x,y);
-            hashMap.put(new Point2D(x,y),i);
             points[i].draw();
         }
 
@@ -79,13 +78,14 @@ public class ConvexHull {
         for (int i=0;i<size;i++) {
             for (int j=i;j<size;j++) {
                 if (points[i].distanceTo(points[j]) <=distance) {
-                    uf.union(hashMap.get(points[i]),hashMap.get(points[j]));
+                    uf.union(i,j);
                 }
             }
         }
 
         HashSet<Integer> hashSet = new HashSet<>();
 
+        // Only add non-repeated element
         for (int i = 0; i < size; i++) {
             hashSet.add(uf.find(i));
         }
