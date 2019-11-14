@@ -32,11 +32,9 @@ public class ConvexHull {
         for (Point2D point : temp) {
             while (vertex >= 2 && Point2D.ccw(VertexSet.get(vertex-2), VertexSet.get(vertex-1), point) < 0) {
                 // If the point is not ccw to other vortex, the point is not vortex.
-                vertex--;
-                VertexSet.remove(vertex);
+                VertexSet.remove(--vertex);
             }
-            VertexSet.add(vertex,point);
-            vertex++;
+            VertexSet.add(vertex++,point);
         }
 
         int[] set = new int[VertexSet.size()];
