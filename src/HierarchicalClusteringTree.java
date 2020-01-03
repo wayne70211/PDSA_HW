@@ -11,16 +11,14 @@ public class HierarchicalClusteringTree {
     private MinPQ<Edge> minPQ;
     private final Hashtable<Point2D, Integer> degree;
     private final Hashtable<Point2D, TreeNode> tree;
-    private TreeNode root;
-    private LinkedList<TreeNode> list;
+    private LinkedList[] cluster;
 
-
+    // comparable for two points distance
     private class Edge implements Comparable<Edge>{
         private Point2D a,b;
         private double distance;
 
         Edge(Point2D a, Point2D b){
-            // comparable for two points distance
             this.a = a;
             this.b = b;
             this.distance = a.distanceTo(b);
@@ -69,40 +67,38 @@ public class HierarchicalClusteringTree {
     // create clustering tree
     HierarchicalClusteringTree(Point2D[] point2DS) {
 
-        // Add the minimum distance points into graph
-        // Remember the cluster number
-
         size = point2DS.length;
         minPQ = new MinPQ<>();
         degree = new Hashtable<>();
         tree = new Hashtable<>();
-        list = new LinkedList<>();
+        cluster = new LinkedList[size];
 
-        double minDistance;
         ArrayList<Point2D> arrayList = new ArrayList<>();
         Arrays.sort(point2DS,Point2D.Y_ORDER);
+        cluster[size-1] = new LinkedList();
 
         // Compute all distance between all two points
         for (int i = 0; i < size; i++) {
-            minDistance = Double.POSITIVE_INFINITY;
             for (int j = i+1; j < size; j++) {
                 Edge edge = new Edge(point2DS[i],point2DS[j]);
-                if (edge.distance < minDistance) {
-                    minDistance = edge.distance;
-                    minPQ.insert(edge);
-                }
+                minPQ.insert(edge);
             }
-            TreeNode cluster = new TreeNode(point2DS[i]);
+            TreeNode node = new TreeNode(point2DS[i]);
             arrayList.add(point2DS[i]);
             degree.put(point2DS[i],1);
-            tree.put(point2DS[i],cluster);
-            list.push(cluster);
+            tree.put(point2DS[i],node);
+            cluster[size-1].push(1);
         }
 
 
         for (int i = 0; i < size-1; i++) {
             addCluster(arrayList);
+            cluster[size-2-i] = new LinkedList();
+            for (Point2D p: arrayList) {
+                cluster[size-2-i].push(degree.get(p));
+            }
         }
+
         StdDraw.show();
 
     }
@@ -115,33 +111,24 @@ public class HierarchicalClusteringTree {
             minEdge = minPQ.delMin();
         }
 
-        StdDraw.setPenColor(StdDraw.BLUE);
-        StdDraw.setPenRadius(0.005);
-        minEdge.a.drawTo(minEdge.b);
-
         // Compute centroid point
         double cx = (minEdge.a.x() * degree.get(minEdge.a) + minEdge.b.x() * degree.get(minEdge.b))/(degree.get(minEdge.a)+ degree.get(minEdge.b));
         double cy = (minEdge.a.y() * degree.get(minEdge.a) + minEdge.b.y() * degree.get(minEdge.b))/(degree.get(minEdge.a)+ degree.get(minEdge.b));
         Point2D centroid = new Point2D(cx,cy);
+        int mass = degree.get(minEdge.a)+ degree.get(minEdge.b);
+
 
         // Add to tree
         TreeNode cluster = new TreeNode(centroid,tree.get(minEdge.a),tree.get(minEdge.b));
         tree.put(centroid,cluster);
-        list.push(cluster);
 
-        // Root
-        if (arrayList.size()<=2) {
-            root = cluster;
-        }
-
+        // Remove two points
         arrayList.remove(minEdge.a);
         arrayList.remove(minEdge.b);
 
         // Find the distance between the new centroid and all other points
-        int mass = degree.get(minEdge.a)+ degree.get(minEdge.b);
-
         for (Point2D point2D : arrayList){
-            Edge edge = new Edge(point2D,centroid);
+            Edge edge = new Edge(centroid,point2D);
             minPQ.insert(edge);
         }
 
@@ -149,6 +136,10 @@ public class HierarchicalClusteringTree {
         arrayList.add(centroid);
         degree.put(centroid,mass);
 
+        // Plot
+        StdDraw.setPenColor(StdDraw.BLUE);
+        StdDraw.setPenRadius(0.005);
+        minEdge.a.drawTo(minEdge.b);
         StdDraw.setPenColor(StdDraw.RED);
         StdDraw.setPenRadius(0.01*Math.sqrt(mass));
         centroid.draw();
@@ -157,35 +148,18 @@ public class HierarchicalClusteringTree {
 
     }
 
-
-
-
     // k is the number of clusters. return the number of nodes in each cluster (in ascending order)
     int[] cluster (int k) {
+        if (k > size) {
+            throw new IndexOutOfBoundsException();
+        }
+
         int[] nodes = new int[k];
-        LinkedList<TreeNode> linkedList = (LinkedList<TreeNode>) list.clone();
-
-        if (k == 2) {
-            TreeNode node = linkedList.pop();
-            int total = node.size;
-            node = linkedList.pop();
-            nodes[0] = node.size;
-            nodes[1] = total - node.size;
-            Arrays.sort(nodes);
-            return nodes;
-        } else if (k == 1) {
-            TreeNode node = linkedList.pop();
-            nodes[0] = node.size;
-            return nodes;
-        }
-
-        for (int i = 1; i < k; i++) {
-            linkedList.pop();
-        }
+        LinkedList<Integer> linkedList = (LinkedList<Integer>) cluster[k-1].clone();
 
         for (int i = 0; i < k; i++) {
-            TreeNode node = linkedList.pop();
-            nodes[i] = node.size;
+            int node = linkedList.pop();
+            nodes[i] = node;
         }
 
         Arrays.sort(nodes);
@@ -194,8 +168,7 @@ public class HierarchicalClusteringTree {
     }
 
     public static void main(String[] args) throws FileNotFoundException {
-        //File file = new File("input_HW7.txt") ;// file name assigned
-        File file = new File("test.txt") ;// file name assigned
+        File file = new File("input_HW7.txt") ; // file name assigned
         Scanner in = new Scanner(file);
 
         int size = Integer.parseInt(in.nextLine());
@@ -216,15 +189,15 @@ public class HierarchicalClusteringTree {
         }
 
         StdDraw.show();
+
         HierarchicalClusteringTree main = new HierarchicalClusteringTree(points);
-        int[] clusters = main.cluster(2);
+        int a = 3;
 
+        int[] clusters = main.cluster(a);
 
-        for (int i = 0; i < clusters.length; i++) {
-            System.out.println(clusters[i]);
+        for (int i : clusters){
+            System.out.println(i);
         }
-
-
 
     }
 
