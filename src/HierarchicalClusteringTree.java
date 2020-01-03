@@ -10,7 +10,6 @@ public class HierarchicalClusteringTree {
     private int size;
     private MinPQ<Edge> minPQ;
     private final Hashtable<Point2D, Integer> degree;
-    private final Hashtable<Point2D, TreeNode> tree;
     private LinkedList[] cluster;
 
     // comparable for two points distance
@@ -31,46 +30,12 @@ public class HierarchicalClusteringTree {
 
     }
 
-    public class TreeNode {
-        private TreeNode parent;            // parent
-        private TreeNode left, right;       // two children
-        private Point2D point;              // name of node
-        private int size;
-
-        // create a leaf node
-        TreeNode(Point2D point) {
-            this.point = point;
-            this.size = 1;
-        }
-
-        // create an internal node that is the parent of x and y
-        TreeNode(Point2D point, TreeNode x, TreeNode y) {
-            this.point = point;
-            this.left = x;
-            this.right = y;
-            this.size  = x.size+y.size;
-            x.parent = this;
-            y.parent = this;
-        }
-
-        // return root
-        public TreeNode root() {
-            TreeNode x = this;
-            while (x.parent != null)
-                x = x.parent;
-            return x;
-        }
-
-    }
-
-
     // create clustering tree
     HierarchicalClusteringTree(Point2D[] point2DS) {
 
         size = point2DS.length;
         minPQ = new MinPQ<>();
         degree = new Hashtable<>();
-        tree = new Hashtable<>();
         cluster = new LinkedList[size];
 
         ArrayList<Point2D> arrayList = new ArrayList<>();
@@ -83,10 +48,8 @@ public class HierarchicalClusteringTree {
                 Edge edge = new Edge(point2DS[i],point2DS[j]);
                 minPQ.insert(edge);
             }
-            TreeNode node = new TreeNode(point2DS[i]);
             arrayList.add(point2DS[i]);
             degree.put(point2DS[i],1);
-            tree.put(point2DS[i],node);
             cluster[size-1].push(1);
         }
 
@@ -116,11 +79,6 @@ public class HierarchicalClusteringTree {
         double cy = (minEdge.a.y() * degree.get(minEdge.a) + minEdge.b.y() * degree.get(minEdge.b))/(degree.get(minEdge.a)+ degree.get(minEdge.b));
         Point2D centroid = new Point2D(cx,cy);
         int mass = degree.get(minEdge.a)+ degree.get(minEdge.b);
-
-
-        // Add to tree
-        TreeNode cluster = new TreeNode(centroid,tree.get(minEdge.a),tree.get(minEdge.b));
-        tree.put(centroid,cluster);
 
         // Remove two points
         arrayList.remove(minEdge.a);
