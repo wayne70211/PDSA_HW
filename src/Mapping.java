@@ -2,36 +2,30 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.io.File;
 public class Mapping{
-    public static void main(String[] args){
+    public static void main(String[] args) throws FileNotFoundException {
 
         int foundCount = 0;
         int repeatCount = 0;
 
-        //Scanner (use this scanner when uploading your code)
-        //Scanner in = new Scanner(System.in);
-
-        //scanner for local test (delete this part when uploading to onlinejudge)
+        // Scanner
         File file = new File("input_HW0.txt") ;
-        Scanner in = null;
-        try {
-            in = new Scanner(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        Scanner in = new Scanner(file);
 
-        //Read int k
+        // Read int k
         int readCount=Integer.parseInt(in.nextLine());
 
         String[] array =new String[readCount];
 
-        //Read k nucleotide sequences
+        // Read k nucleotide sequences
         for (int i=0;i<readCount;i++){
             String keyword = in.nextLine();
             array [i] = keyword;
         }
-        //Read reference sequence
+
+        // Read reference sequence
         String target = in.nextLine();
-        //Mapping (you might use "indexof")
+
+        // Mapping
         for (int i=0;i<readCount;i++){
             int search_idx = target.indexOf(array[i]);
             if (search_idx != -1){
@@ -42,7 +36,8 @@ public class Mapping{
                 repeatCount += 1;
             }
         }
-        //print out Mapping consequences
+
+        // Print out Mapping consequences
         System.out.println(foundCount);
         System.out.println(repeatCount);
     }
