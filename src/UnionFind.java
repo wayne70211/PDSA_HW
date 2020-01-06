@@ -1,5 +1,7 @@
 //import java.io.File;
 //import java.io.FileNotFoundException;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Scanner;
@@ -37,22 +39,15 @@ public class UnionFind {
         count--;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
 
         Hashtable<String, Integer> table = new Hashtable<>();
 
         parent = new ArrayList<>();
         size = new ArrayList<>();
 
-        Scanner in = new Scanner(System.in);
-
-//        File file = new File("input_HW1.txt") ;
-//        Scanner in = null;
-//        try {
-//            in = new Scanner(file);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
+        File file = new File("input_HW1.txt") ;
+        Scanner in = new Scanner(file);
 
         // Read threshold
         int threshold = Integer.parseInt(in.nextLine());
