@@ -56,6 +56,7 @@ public class UnionFind {
         int index = 0;
 
         while (in.hasNextLine()) {
+
             // Read Line
             String line = in.nextLine();
 
