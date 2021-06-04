@@ -1,5 +1,6 @@
 # Data Structures and Algorithms Implementation
-The exercises of Practical Data Structures and Algorithms course in NTU
+The exercises of Practical Data Structures and Algorithms course in NTU <br>
+All the codes are passed test and finally get A+ in this course.
 
 * String Mapping
 * Protein-protein interaction analysis using Union-find
